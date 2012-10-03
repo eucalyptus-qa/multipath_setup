@@ -1,0 +1,2 @@
+STORAGE_INTERFACES="iface0=eth0,iface1=eth1"
+

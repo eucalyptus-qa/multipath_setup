@@ -300,8 +300,39 @@ for( my $i = 0; $i < @ip_lst; $i++ ){
 		print "\n";
 		sleep(1);
 
-				
+		### COPY OVER sc_storage_interface FILE
+		$cmd = $SCP_PREFIX . "./sc_storage_interface root\@$this_ip:/root/.";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
 
+		### ADD STORAGE_INTERFACES="iface0=br0,iface1=eth1" to eucalyptus.conf
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cat /root/sc_storage_interface >> $ENV{'EUCALYPTUS'}/etc/eucalyptus/eucalyptus.conf\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+	}elsif( $this_roll =~ /NC/ ){
+
+		print "\n";
+		print "[NC " . $this_ip . "]\n";
+		print "\n";
+
+		### COPY OVER nc_storage_interface FILE
+		$cmd = $SCP_PREFIX . "./nc_storage_interface root\@$this_ip:/root/.";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### ADD STORAGE_INTERFACES="iface0=eth0,iface1=eth1" to eucalyptus.conf
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cat /root/nc_storage_interface >> $ENV{'EUCALYPTUS'}/etc/eucalyptus/eucalyptus.conf\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
 	};
 
 };
