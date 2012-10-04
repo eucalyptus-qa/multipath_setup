@@ -326,7 +326,7 @@ for( my $i = 0; $i < @ip_lst; $i++ ){
 		};
 
 		my $from = "IPADDR=.*";
-		my $to = "IPADDR=\"192.168." . $last_two_hex . "\"";
+		my $to = "IPADDR=\"10.109." . $last_two_hex . "\"";
 		my $this_file = "./ifcfg-eth1";
 		my_sed($from, $to, $this_file); 
 
