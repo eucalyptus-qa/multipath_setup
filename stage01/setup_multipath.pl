@@ -320,6 +320,79 @@ for( my $i = 0; $i < @ip_lst; $i++ ){
 		print "[NC " . $this_ip . "]\n";
 		print "\n";
 
+		my $last_two_hex = "";
+		if( $this_ip =~ /^\d+\.\d+\.(\d+\.\d+)/ ){
+			$last_two_hex = $1;
+		};
+
+		my $from = "IPADDR=.*";
+		my $to = "IPADDR=\"192.168." . $last_two_hex . "\"";
+		my $this_file = "./ifcfg-eth1";
+		my_sed($from, $to, $this_file); 
+
+		### COPY OVER ifcfg-eth1 FILE
+		$cmd = $SCP_PREFIX . "./ifcfg-eth1 root\@$this_ip:/etc/sysconfig/network-scripts/.";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### CHECK OUT ifcfg-eth1 FILE
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cat /etc/sysconfig/network-scripts/ifcfg-eth1\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### BRING eth1 UP
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"ifup eth1\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### CHECK OUT ifconfig
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"ifconfig\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### YUM INSTALL "device-mapper-multipath" package
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"yum -y install device-mapper-multipath\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### ENABLE MULTIPATH
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"mpathconf --enable\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### COPY multipath.conf to /etc/multipath.conf			### NOTE: Directory below must not be static	100212
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/storage-san/conf/emc/multipath.conf /etc/multipath.conf\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### START multipathd SERVICE
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"service multipathd start\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
+		### COPY udev rules						### NOTE: Directory below must not be static	100212
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/storage-san/udev/12-dm-permissions.rules /etc/udev/rules.d/.\"";
+		print $cmd . "\n";
+		system($cmd);
+		print "\n";
+		sleep(1);
+
 		### COPY OVER nc_storage_interface FILE
 		$cmd = $SCP_PREFIX . "./nc_storage_interface root\@$this_ip:/root/.";
 		print $cmd . "\n";
