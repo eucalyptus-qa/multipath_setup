@@ -294,7 +294,7 @@ for( my $i = 0; $i < @ip_lst; $i++ ){
 		sleep(1);
 
 		### COPY udev rules						### NOTE: Directory below must not be static	100212
-		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/storage-san/udev/12-dm-permissions.rules /etc/udev/rules.d/.\"";
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/clc/modules/storage-common/udev/12-dm-permissions.rules /etc/udev/rules.d/.\"";
 		print $cmd . "\n";
 		system($cmd);
 		print "\n";
@@ -387,7 +387,7 @@ for( my $i = 0; $i < @ip_lst; $i++ ){
 		sleep(1);
 
 		### COPY udev rules						### NOTE: Directory below must not be static	100212
-		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/storage-san/udev/12-dm-permissions.rules /etc/udev/rules.d/.\"";
+		$cmd = $SSH_PREFIX . "root\@$this_ip \"cp -f /root/euca_builder/eee/clc/modules/storage-common/udev/12-dm-permissions.rules /etc/udev/rules.d/.\"";
 		print $cmd . "\n";
 		system($cmd);
 		print "\n";
